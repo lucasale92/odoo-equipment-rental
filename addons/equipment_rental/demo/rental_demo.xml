@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Equipos de ejemplo -->
+    <record id="demo_equipment_drill" model="rental.equipment">
+        <field name="name">Taladro percutor Bosch GSB</field>
+        <field name="category">tool</field>
+        <field name="daily_price">12.0</field>
+        <field name="description">Taladro percutor profesional 750W con maletín.</field>
+    </record>
+
+    <record id="demo_equipment_generator" model="rental.equipment">
+        <field name="name">Generador eléctrico 5kVA</field>
+        <field name="category">machine</field>
+        <field name="daily_price">45.0</field>
+        <field name="description">Generador a gasolina, arranque eléctrico.</field>
+    </record>
+
+    <record id="demo_equipment_camera" model="rental.equipment">
+        <field name="name">Cámara Sony A7 III</field>
+        <field name="category">electronic</field>
+        <field name="daily_price">60.0</field>
+        <field name="description">Cámara mirrorless full-frame con lente 24-70mm.</field>
+    </record>
+
+    <record id="demo_equipment_scaffold" model="rental.equipment">
+        <field name="name">Andamio modular 6m</field>
+        <field name="category">machine</field>
+        <field name="daily_price">30.0</field>
+        <field name="status">maintenance</field>
+        <field name="description">Andamio de aluminio, actualmente en revisión.</field>
+    </record>
+
+    <!-- Orden de alquiler de ejemplo -->
+    <record id="demo_rental_order_1" model="rental.order">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="date_start" eval="(DateTime.today()).strftime('%Y-%m-%d')"/>
+        <field name="date_end" eval="(DateTime.today() + timedelta(days=4)).strftime('%Y-%m-%d')"/>
+        <field name="note">Alquiler de demostración.</field>
+    </record>
+
+    <record id="demo_rental_order_1_line_1" model="rental.order.line">
+        <field name="order_id" ref="demo_rental_order_1"/>
+        <field name="equipment_id" ref="demo_equipment_drill"/>
+        <field name="quantity">1</field>
+        <field name="unit_price">12.0</field>
+    </record>
+
+    <record id="demo_rental_order_1_line_2" model="rental.order.line">
+        <field name="order_id" ref="demo_rental_order_1"/>
+        <field name="equipment_id" ref="demo_equipment_camera"/>
+        <field name="quantity">1</field>
+        <field name="unit_price">60.0</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Editores
+.idea/
+.vscode/
+*.swp
+
+# SO
+.DS_Store
+Thumbs.db

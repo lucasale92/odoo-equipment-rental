@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_rental_root" name="Alquiler"
+              web_icon="equipment_rental,static/description/icon.png"
+              sequence="90"/>
+
+    <menuitem id="menu_rental_orders" name="Órdenes"
+              parent="menu_rental_root"
+              action="action_rental_order" sequence="10"/>
+
+    <menuitem id="menu_rental_equipment" name="Equipos"
+              parent="menu_rental_root"
+              action="action_rental_equipment" sequence="20"/>
+
+    <menuitem id="menu_rental_reporting" name="Informes"
+              parent="menu_rental_root" sequence="30"/>
+
+    <menuitem id="menu_rental_report_analysis" name="Análisis"
+              parent="menu_rental_reporting"
+              action="action_rental_order_report" sequence="10"/>
+
+    <menuitem id="menu_rental_config" name="Configuración"
+              parent="menu_rental_root"
+              groups="group_rental_manager" sequence="90"/>
+
+</odoo>

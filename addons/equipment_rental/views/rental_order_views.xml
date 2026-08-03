@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FORMULARIO -->
+    <record id="view_rental_order_form" model="ir.ui.view">
+        <field name="name">rental.order.form</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirmar"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_start" type="object" string="Iniciar alquiler"
+                            class="btn-primary" invisible="state != 'confirmed'"/>
+                    <button name="action_open_return_wizard" type="object"
+                            string="Registrar devolución" class="btn-primary"
+                            invisible="state != 'ongoing'"/>
+                    <button name="action_create_invoice" type="object"
+                            string="Crear factura" class="btn-secondary"
+                            invisible="state in ('draft', 'cancelled') or invoice_id"/>
+                    <button name="action_cancel" type="object" string="Cancelar"
+                            invisible="state in ('returned', 'cancelled')"/>
+                    <button name="action_draft" type="object" string="Volver a borrador"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,ongoing,returned"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" type="object"
+                                class="oe_stat_button" icon="fa-pencil-square-o"
+                                invisible="not invoice_id">
+                            <field name="invoice_count" widget="statinfo" string="Factura"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"
+                                   readonly="state not in ('draft',)"/>
+                            <field name="date_start"
+                                   readonly="state not in ('draft', 'confirmed')"/>
+                            <field name="date_end"
+                                   readonly="state not in ('draft', 'confirmed')"/>
+                            <field name="return_date"
+                                   invisible="not return_date"/>
+                        </group>
+                        <group>
+                            <field name="duration_days"/>
+                            <field name="amount_total"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Equipos">
+                            <field name="rental_line_ids"
+                                   readonly="state not in ('draft', 'confirmed')">
+                                <list editable="bottom">
+                                    <field name="equipment_id"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price"/>
+                                    <field name="duration_days"/>
+                                    <field name="price_subtotal" sum="Total"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="amount_total" widget="monetary"/>
+                            </group>
+                        </page>
+                        <page string="Notas">
+                            <field name="note" placeholder="Observaciones internas..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- LISTA -->
+    <record id="view_rental_order_list" model="ir.ui.view">
+        <field name="name">rental.order.list</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'confirmed'"
+                  decoration-success="state == 'ongoing'"
+                  decoration-muted="state in ('returned', 'cancelled')">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="duration_days"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'confirmed'"
+                       decoration-success="state == 'ongoing'"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- CALENDARIO -->
+    <record id="view_rental_order_calendar" model="ir.ui.view">
+        <field name="name">rental.order.calendar</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <calendar date_start="date_start" date_stop="date_end"
+                      string="Alquileres" color="partner_id" mode="month">
+                <field name="partner_id"/>
+                <field name="amount_total"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- PIVOT -->
+    <record id="view_rental_order_pivot" model="ir.ui.view">
+        <field name="name">rental.order.pivot</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis de alquileres">
+                <field name="partner_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- GRAPH -->
+    <record id="view_rental_order_graph" model="ir.ui.view">
+        <field name="name">rental.order.graph</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <graph string="Ingresos por alquiler" type="bar">
+                <field name="date_start" interval="month"/>
+                <field name="amount_total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- BÚSQUEDA -->
+    <record id="view_rental_order_search" model="ir.ui.view">
+        <field name="name">rental.order.search</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <filter name="filter_draft" string="Borrador"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_confirmed" string="Confirmados"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter name="filter_ongoing" string="En curso"
+                        domain="[('state', '=', 'ongoing')]"/>
+                <separator/>
+                <filter name="filter_my" string="Mis órdenes"
+                        domain="[('create_uid', '=', uid)]"/>
+                <group>
+                    <filter name="group_partner" string="Cliente"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_state" string="Estado"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_month" string="Mes de inicio"
+                            context="{'group_by': 'date_start:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACCIÓN -->
+    <record id="action_rental_order" model="ir.actions.act_window">
+        <field name="name">Órdenes de alquiler</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,form,calendar,pivot,graph</field>
+        <field name="search_view_id" ref="view_rental_order_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primera orden de alquiler
+            </p>
+        </field>
+    </record>
+
+    <record id="action_rental_order_report" model="ir.actions.act_window">
+        <field name="name">Análisis de alquileres</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">pivot,graph</field>
+    </record>
+
+</odoo>

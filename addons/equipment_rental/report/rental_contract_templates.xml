@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_rental_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Contrato de alquiler</h2>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <strong>Referencia:</strong>
+                                <span t-field="doc.name"/><br/>
+                                <strong>Cliente:</strong>
+                                <span t-field="doc.partner_id"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Desde:</strong>
+                                <span t-field="doc.date_start"/><br/>
+                                <strong>Hasta:</strong>
+                                <span t-field="doc.date_end"/><br/>
+                                <strong>Días:</strong>
+                                <span t-field="doc.duration_days"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th class="text-end">Cantidad</th>
+                                    <th class="text-end">Tarifa/día</th>
+                                    <th class="text-end">Días</th>
+                                    <th class="text-end">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.rental_line_ids" t-as="line">
+                                    <td><span t-field="line.equipment_id"/></td>
+                                    <td class="text-end"><span t-field="line.quantity"/></td>
+                                    <td class="text-end">
+                                        <span t-field="line.unit_price"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                    <td class="text-end"><span t-field="line.duration_days"/></td>
+                                    <td class="text-end">
+                                        <span t-field="line.price_subtotal"
+                                              t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-6 offset-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-end">
+                                            <strong>
+                                                <span t-field="doc.amount_total"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <p class="mt-4" t-if="doc.note">
+                            <strong>Notas:</strong> <span t-field="doc.note"/>
+                        </p>
+
+                        <div class="row mt-5">
+                            <div class="col-6 text-center">
+                                _______________________<br/>
+                                Firma del arrendador
+                            </div>
+                            <div class="col-6 text-center">
+                                _______________________<br/>
+                                Firma del cliente
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

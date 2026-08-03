@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="module_category_rental" model="ir.module.category">
+        <field name="name">Alquiler de Equipos</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- En Odoo 19 los grupos se agrupan mediante res.groups.privilege -->
+    <record id="privilege_rental" model="res.groups.privilege">
+        <field name="name">Alquiler</field>
+        <field name="category_id" ref="module_category_rental"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_rental_user" model="res.groups">
+        <field name="name">Usuario</field>
+        <field name="privilege_id" ref="privilege_rental"/>
+        <field name="comment">Puede crear y gestionar sus propias órdenes de alquiler.</field>
+    </record>
+
+    <record id="group_rental_manager" model="res.groups">
+        <field name="name">Responsable</field>
+        <field name="privilege_id" ref="privilege_rental"/>
+        <field name="implied_ids" eval="[(4, ref('group_rental_user'))]"/>
+        <field name="comment">Acceso total: equipos, todas las órdenes y eliminación.</field>
+    </record>
+
+    <!-- Regla: un usuario normal solo ve las órdenes que ha creado.
+         El responsable ve todas. -->
+    <record id="rental_order_rule_user" model="ir.rule">
+        <field name="name">Órdenes de alquiler: propias</field>
+        <field name="model_id" ref="model_rental_order"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_rental_user'))]"/>
+    </record>
+
+    <record id="rental_order_rule_manager" model="ir.rule">
+        <field name="name">Órdenes de alquiler: todas (responsable)</field>
+        <field name="model_id" ref="model_rental_order"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_rental_manager'))]"/>
+    </record>
+
+</odoo>

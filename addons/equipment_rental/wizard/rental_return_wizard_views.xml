@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rental_return_wizard_form" model="ir.ui.view">
+        <field name="name">rental.return.wizard.form</field>
+        <field name="model">rental.return.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Registrar devolución">
+                <group>
+                    <field name="order_id"/>
+                    <field name="expected_date"/>
+                    <field name="return_date"/>
+                </group>
+                <group string="Recargo por retraso"
+                       invisible="not late_fee_per_day and late_days == 0">
+                    <field name="late_fee_per_day"/>
+                    <field name="late_days"/>
+                    <field name="late_fee_total"/>
+                    <field name="currency_id" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_return" type="object"
+                            string="Confirmar devolución" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
