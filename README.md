@@ -7,6 +7,15 @@ Una empresa alquila equipos (herramientas, maquinaria, electrónica…) a client
 un número de días. El módulo cubre el ciclo completo: catálogo, reserva con control
 de disponibilidad, contrato PDF y facturación.
 
+## Demo en vivo
+
+**https://163-176-66-200.sslip.io**
+
+- Usuario: `admin`
+- Contraseña: `admin`
+
+(Instancia de demostración con datos ficticios, sin garantía de disponibilidad continua.)
+
 ## Funcionalidades
 
 - Catálogo de equipos con tarifa diaria, foto y estado (vista **kanban**).
