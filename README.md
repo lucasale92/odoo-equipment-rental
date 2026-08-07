@@ -9,10 +9,10 @@ de disponibilidad, contrato PDF y facturación.
 
 ## Demo en vivo
 
-**https://163-176-66-200.sslip.io**
+**[Entrar directo a la demo](https://163-176-66-200.sslip.io/demo-login)** (acceso automático, sin login)
 
-- Usuario: `admin`
-- Contraseña: `admin`
+Login manual si preferís: https://163-176-66-200.sslip.io — usuario `demo` / contraseña `demo`
+(cuenta acotada al módulo de Alquiler, sin permisos de administración).
 
 (Instancia de demostración con datos ficticios, sin garantía de disponibilidad continua.)
 
