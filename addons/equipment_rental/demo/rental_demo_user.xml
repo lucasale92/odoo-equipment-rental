@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Usuario de demo para el link "Ver demo" del portfolio: solo
+         permisos de Alquiler (Responsable), sin acceso a Ajustes ni
+         a otras apps. -->
+    <record id="user_demo" model="res.users">
+        <field name="name">Demo</field>
+        <field name="login">demo</field>
+        <field name="password">demo</field>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_user'), ref('group_rental_manager')])]"/>
+    </record>
+
+</odoo>

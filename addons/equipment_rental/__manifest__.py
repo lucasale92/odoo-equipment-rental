@@ -44,6 +44,7 @@ Funcionalidades:
     ],
     'demo': [
         'demo/rental_demo.xml',
+        'demo/rental_demo_user.xml',
     ],
     'application': True,
     'installable': True,
