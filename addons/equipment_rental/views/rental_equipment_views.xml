@@ -76,8 +76,7 @@
                 <templates>
                     <t t-name="card">
                         <div class="o_kanban_image me-2">
-                            <img t-att-src="kanban_image('rental.equipment', 'image', record.id.raw_value)"
-                                 alt="Equipo" class="o_image_64_contain"/>
+                            <field name="image" widget="image" class="o_image_64_contain" alt="Equipo"/>
                         </div>
                         <div class="oe_kanban_details">
                             <strong class="o_kanban_record_title">
@@ -127,7 +126,7 @@
     <record id="action_rental_equipment" model="ir.actions.act_window">
         <field name="name">Equipos</field>
         <field name="res_model">rental.equipment</field>
-        <field name="view_mode">kanban,list,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="search_view_id" ref="view_rental_equipment_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
