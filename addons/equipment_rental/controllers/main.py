@@ -11,4 +11,4 @@ class RentalDemoLogin(http.Controller):
     def demo_login(self, **kwargs):
         credential = {'login': 'demo', 'password': 'demo', 'type': 'password'}
         request.session.authenticate(request.env, credential)
-        return request.redirect('/odoo/rental')
+        return request.redirect('/odoo')
